@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#020405">
+<title>Para ti ✨</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Montserrat:wght@300;400;500&display=swap');
+
+:root{
+  --gold:#f4cf62;
+  --gold-light:#fff0a0;
+  --white:#fffdf7;
+  --black:#020405;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html,body{
+  width:100%;
+  min-height:100%;
+  background:var(--black);
+}
+
+body{
+  overflow:hidden;
+  color:var(--white);
+  font-family:Montserrat,Arial,sans-serif;
+}
+
+/* =========================================================
+   1. PORTADA
+   ========================================================= */
+
+#intro{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  overflow:hidden;
+  cursor:pointer;
+  background:#020405;
+  transition:
+    opacity 1.15s cubic-bezier(.65,0,.35,1),
+    transform 1.5s cubic-bezier(.65,0,.35,1),
+    visibility 1.5s;
+}
+
+#intro.hide{
+  opacity:0;
+  transform:scale(1.08);
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.intro-bg{
+  position:absolute;
+  inset:0;
+  background:url("portada-flor.jpg") center center / cover no-repeat;
+  animation:slowZoom 12s ease-in-out infinite alternate;
+}
+
+
+
+@keyframes slowZoom{
+  from{transform:scale(1.01)}
+  to{transform:scale(1.07)}
+}
+
+.intro-content{display:none!important;
+  position:absolute;
+  left:50%;
+  bottom:9%;
+  transform:translateX(-50%);
+  z-index:12;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  user-select:none;
+}
+
+.open-button{
+  width:78px;
+  height:78px;
+  border:1px solid rgba(255,221,105,.72);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:transparent;
+  box-shadow:none;
+  animation:pulse 2.2s ease-in-out infinite;
+}
+
+.open-button::before,
+.open-button::after{
+  content:"";
+  position:absolute;
+  width:78px;
+  height:78px;
+  border:1px solid rgba(247,210,99,.17);
+  border-radius:50%;
+  animation:ring 2.5s ease-out infinite;
+}
+
+.open-button::after{animation-delay:1.25s}
+
+@keyframes ring{
+  0%{transform:scale(.8);opacity:.75}
+  100%{transform:scale(1.5);opacity:0}
+}
+
+@keyframes pulse{
+  50%{box-shadow:0 0 38px rgba(244,207,98,.16)}
+}
+
+.arrow{
+  color:var(--gold-light);
+  font-size:25px;
+  line-height:1;
+  animation:arrowDown 1.5s ease-in-out infinite;
+}
+
+@keyframes arrowDown{
+  50%{transform:translateY(5px)}
+}
+
+.intro-label{
+  margin-top:23px;
+  color:var(--gold);
+  font-size:10px;
+  letter-spacing:5px;
+  font-weight:500;
+}
+
+.intro-sub{
+  margin-top:9px;
+  color:rgba(255,255,255,.62);
+  font-size:9px;
+  letter-spacing:2px;
+  text-shadow:none;
+}
+
+/* =========================================================
+   FLORES / PÉTALOS ANIMADOS
+   Están detrás del texto para que NUNCA tapen las letras.
+   ========================================================= */
+
+.flower-layer{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.falling-flower{
+  position:absolute;
+  top:-12vh;
+  width:var(--size);
+  height:var(--size);
+  opacity:0;
+  animation:flowerFall var(--duration) linear infinite;
+  animation-delay:var(--delay);
+  filter:drop-shadow(0 0 5px rgba(255,202,65,.28));
+}
+
+.falling-flower svg{
+  width:100%;
+  height:100%;
+  display:block;
+  animation:flowerSpin 4s linear infinite;
+}
+
+@keyframes flowerFall{
+  0%{
+    transform:translate3d(0,-12vh,0) rotate(0deg);
+    opacity:0;
+  }
+  8%{opacity:.72}
+  45%{opacity:.86}
+  100%{
+    transform:translate3d(var(--drift),112vh,0) rotate(420deg);
+    opacity:0;
+  }
+}
+
+@keyframes flowerSpin{
+  to{transform:rotate(360deg)}
+}
+
+
+/* Pequeñas luces cálidas: decoran sin competir con el texto. */
+.spark-layer{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.spark{
+  position:absolute;
+  width:3px;
+  height:3px;
+  border-radius:50%;
+  background:#ffe89a;
+  box-shadow:0 0 9px 2px rgba(255,210,85,.48);
+  opacity:0;
+  animation:sparkTwinkle var(--spark-duration) ease-in-out infinite;
+  animation-delay:var(--spark-delay);
+}
+
+@keyframes sparkTwinkle{
+  0%,100%{opacity:0;transform:scale(.4)}
+  45%{opacity:.75;transform:scale(1)}
+  60%{opacity:.18;transform:scale(.65)}
+}
+
+/* =========================================================
+   2. INTERFAZ DEL ÁRBOL
+   ========================================================= */
+
+#letter{
+  position:relative;
+  width:100%;
+  min-height:100vh;
+  min-height:100svh;
+  overflow:hidden;
+  background:var(--black);
+  opacity:0;
+  transform:scale(1.035);
+  transition:
+    opacity 1.35s ease,
+    transform 1.7s cubic-bezier(.2,.75,.2,1);
+}
+
+#letter.show{
+  opacity:1;
+  transform:scale(1);
+}
+
+.tree-bg{
+  position:absolute;
+  inset:0;
+  background:url("arbol-limpio.jpg") center center / cover no-repeat;
+  animation:treeZoom 18s ease-in-out infinite alternate;
+}
+
+@keyframes treeZoom{
+  from{transform:scale(1.015)}
+  to{transform:scale(1.055)}
+}
+
+/* La zona del texto es HTML, no está dentro de la imagen. */
+.text-zone{
+  position:absolute;
+  z-index:10;
+  top:0;
+  right:0;
+  width:46%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  padding:50px clamp(35px,6vw,100px) 50px 30px;
+  background:
+    linear-gradient(90deg,
+      rgba(2,4,5,0) 0%,
+      rgba(2,4,5,.05) 35%,
+      rgba(2,4,5,.12) 70%,
+      rgba(2,4,5,.16) 100%
+    );
+}
+
+.letter-content{
+  width:min(520px,100%);
+  margin-left:auto;
+  position:relative;
+  isolation:isolate;
+}
+
+.letter-content::before{
+  content:"";
+  position:absolute;
+  inset:-45px -55px;
+  z-index:-1;
+  background:radial-gradient(ellipse at center, rgba(0,0,0,.14), transparent 70%);
+  filter:blur(18px);
+  pointer-events:none;
+}
+
+.eyebrow{
+  position:relative;
+  color:var(--gold);
+  font-size:11px;
+  letter-spacing:7px;
+  font-weight:500;
+  margin-bottom:27px;
+  opacity:0;
+  transform:translateY(18px);
+}
+
+.eyebrow::before{
+  content:"✦";
+  display:inline-block;
+  margin-right:10px;
+  font-size:9px;
+  opacity:.75;
+  transform:translateY(-1px);
+}
+
+.title{
+  font-family:"Cormorant Garamond",Georgia,serif;
+  font-weight:400;
+  font-size:clamp(55px,5.4vw,90px);
+  line-height:.84;
+  letter-spacing:-2px;
+  color:#fffdf7;
+  text-shadow:0 3px 24px rgba(0,0,0,.62);
+  margin-bottom:30px;
+  opacity:0;
+  transform:translateY(22px);
+}
+
+.title-accent{
+  display:block;
+  color:var(--gold-light);
+  text-shadow:0 0 30px rgba(247,211,106,.18), 0 3px 22px rgba(0,0,0,.62);
+  font-style:italic;
+  font-weight:500;
+  text-shadow:0 0 28px rgba(247,211,106,.13);
+}
+
+.message{
+  max-width:500px;
+  color:rgba(255,255,255,.88);
+  font-size:15px;
+  line-height:1.9;
+  font-weight:300;
+  text-shadow:0 2px 18px rgba(0,0,0,.75);
+  opacity:0;
+  transform:translateY(22px);
+}
+
+.divider{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  width:min(280px,80%);
+  margin:30px 0 20px;
+  opacity:0;
+  transform:translateY(15px);
+}
+
+.divider-line{
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold));
+}
+
+.divider-line:last-child{
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+
+.heart{
+  color:var(--gold);
+  font-size:18px;
+  animation:heart 1.8s ease-in-out infinite;
+}
+
+@keyframes heart{
+  50%{transform:scale(1.22)}
+}
+
+.signature{
+  color:var(--gold);
+  font-size:10px;
+  letter-spacing:6px;
+  margin-bottom:3px;
+  opacity:0;
+  transform:translateY(12px);
+}
+
+.infinity{
+  color:var(--gold);
+  font:27px Georgia,serif;
+  opacity:0;
+  transform:translateY(12px);
+}
+
+#letter.show .eyebrow{animation:appear .8s .4s forwards}
+#letter.show .title{animation:appear 1s .55s forwards}
+#letter.show .message{animation:appear 1s .73s forwards}
+#letter.show .divider{animation:appear .8s .89s forwards}
+#letter.show .signature{animation:appear .8s .99s forwards}
+#letter.show .infinity{animation:appear .8s 1.07s forwards}
+
+@keyframes appear{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media(max-width:800px){
+
+  .intro-content{display:none!important;
+    bottom:8%;
+  }
+
+  .open-button{
+    width:72px;
+    height:72px;
+  }
+
+  .intro-label{
+    font-size:9px;
+    letter-spacing:4px;
+  }
+
+  #letter{
+    min-height:100vh;
+    min-height:100svh;
+  }
+
+  .tree-bg{
+    background:url("arbol-limpio.jpg") center center / cover no-repeat;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =======================================================
+     PORTADA
+     La imagen NO contiene texto editable.
+     Todo texto está creado por HTML.
+     ======================================================= -->
+
+<section id="intro" aria-label="Abrir regalo">
+  <div class="intro-bg"></div>
+
+  <div class="flower-layer" id="introFlowers"></div>
+  <div class="spark-layer" id="introSparks"></div>
+
+  <div class="intro-content" aria-hidden="true">
+    <div class="open-button">
+      <div class="arrow">↓</div>
+    </div>
+
+    <div class="intro-label">TOCA PARA ABRIR</div>
+    <div class="intro-sub">hay algo para ti</div>
+  </div>
+</section>
+
+<!-- =======================================================
+     INTERFAZ PRINCIPAL
+     ======================================================= -->
+
+<main id="letter">
+
+  <div class="tree-bg"></div>
+
+  <!-- Las flores están en z-index 4 -->
+  <!-- El texto está en z-index 10 -->
+  <!-- Por eso nunca se dibujan encima de las letras. -->
+  <div class="flower-layer" id="treeFlowers"></div>
+  <div class="spark-layer" id="treeSparks"></div>
+
+  <section class="text-zone">
+    <div class="letter-content">
+
+      <div class="eyebrow" id="eyebrow">PARA TI</div>
+
+      <h1 class="title">
+        <span id="title">Eres mi lugar</span>
+        <span class="title-accent" id="titleAccent">favorito</span>
+      </h1>
+
+      <p class="message" id="message">
+        En un mundo tan grande, encontrarte fue lo más bonito que me pudo pasar.
+        Gracias por ser esa persona que hace todo más especial, más bonito y más real.
+        Simplemente... gracias por existir.
+      </p>
+
+      <div class="divider">
+        <span class="divider-line"></span>
+        <span class="heart">♥</span>
+        <span class="divider-line"></span>
+      </div>
+
+      <div class="signature" id="signature">SIEMPRE TÚ</div>
+      <div class="infinity">∞</div>
+
+    </div>
+  </section>
+
+
+</main>
+
+<script>
+(function(){
+
+  const intro = document.getElementById("intro");
+  const letter = document.getElementById("letter");
+
+  let opened = false;
+
+  /* -------------------------------------------------------
+     Abrir la segunda interfaz
+     ------------------------------------------------------- */
+  function openLetter(){
+    if(opened) return;
+    opened = true;
+
+    intro.classList.add("hide");
+
+    setTimeout(() => {
+      letter.classList.add("show");
+    }, 320);
+  }
+
+  intro.addEventListener("click", openLetter);
+
+  document.addEventListener("keydown", e => {
+    if(e.key === "Enter" && !opened) openLetter();
+  });
+
+  /* -------------------------------------------------------
+     Generador de flores amarillas animadas
+     ------------------------------------------------------- */
+
+  function createFlower(layer, amount){
+
+    for(let i=0;i<amount;i++){
+
+      const flower = document.createElement("span");
+      flower.className = "falling-flower";
+
+      const size = 8 + Math.random()*16;
+
+      flower.style.left = (Math.random()*100) + "%";
+      flower.style.setProperty("--size", size + "px");
+      flower.style.setProperty("--duration", (7 + Math.random()*10) + "s");
+      flower.style.setProperty("--delay", (-Math.random()*16) + "s");
+      flower.style.setProperty("--drift", (-120 + Math.random()*240) + "px");
+
+      /* Flor de 5 pétalos en SVG.
+         Es ligera y no depende de emojis del dispositivo. */
+      flower.innerHTML = `
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <g fill="#f5c84b">
+            <ellipse cx="50" cy="24" rx="14" ry="25"/>
+            <ellipse cx="76" cy="42" rx="14" ry="25" transform="rotate(72 76 42)"/>
+            <ellipse cx="66" cy="72" rx="14" ry="25" transform="rotate(144 66 72)"/>
+            <ellipse cx="34" cy="72" rx="14" ry="25" transform="rotate(216 34 72)"/>
+            <ellipse cx="24" cy="42" rx="14" ry="25" transform="rotate(288 24 42)"/>
+          </g>
+          <circle cx="50" cy="50" r="10" fill="#d89516"/>
+          <circle cx="50" cy="50" r="5" fill="#8d5b0d"/>
+        </svg>
+      `;
+
+      layer.appendChild(flower);
+    }
+  }
+
+  createFlower(document.getElementById("introFlowers"), 22);
+  createFlower(document.getElementById("treeFlowers"), 34);
+
+  /* Luces pequeñas, más discretas que las flores. */
+  function createSparks(layer, amount){
+    for(let i=0;i<amount;i++){
+      const s=document.createElement("span");
+      s.className="spark";
+      s.style.left=(Math.random()*100)+"%";
+      s.style.top=(Math.random()*100)+"%";
+      s.style.setProperty("--spark-duration",(2.8+Math.random()*4.5)+"s");
+      s.style.setProperty("--spark-delay",(-Math.random()*7)+"s");
+      layer.appendChild(s);
+    }
+  }
+
+  createSparks(document.getElementById("introSparks"), 30);
+  createSparks(document.getElementById("treeSparks"), 42);
+
+})();
+</script>
+
+</body>
+</html>
