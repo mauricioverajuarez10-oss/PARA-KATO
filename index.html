@@ -141,12 +141,6 @@ body{
   letter-spacing:2px;
   text-shadow:none;
 }
-
-/* =========================================================
-   FLORES / PÉTALOS ANIMADOS
-   Están detrás del texto para que NUNCA tapen las letras.
-   ========================================================= */
-
 .flower-layer{
   position:absolute;
   inset:0;
@@ -191,7 +185,6 @@ body{
 }
 
 
-/* Pequeñas luces cálidas: decoran sin competir con el texto. */
 .spark-layer{
   position:absolute;
   inset:0;
@@ -218,9 +211,6 @@ body{
   60%{opacity:.18;transform:scale(.65)}
 }
 
-/* =========================================================
-   2. INTERFAZ DEL ÁRBOL
-   ========================================================= */
 
 #letter{
   position:relative;
@@ -253,7 +243,6 @@ body{
   to{transform:scale(1.055)}
 }
 
-/* La zona del texto es HTML, no está dentro de la imagen. */
 .text-zone{
   position:absolute;
   z-index:10;
@@ -436,13 +425,6 @@ body{
 </head>
 
 <body>
-
-<!-- =======================================================
-     PORTADA
-     La imagen NO contiene texto editable.
-     Todo texto está creado por HTML.
-     ======================================================= -->
-
 <section id="intro" aria-label="Abrir regalo">
   <div class="intro-bg"></div>
 
@@ -476,17 +458,18 @@ body{
   <section class="text-zone">
     <div class="letter-content">
 
-      <div class="eyebrow" id="eyebrow">PARA TI</div>
+      <div class="eyebrow" id="eyebrow">PARA KATHLEEN</div>
 
       <h1 class="title">
-        <span id="title">Eres mi lugar</span>
-        <span class="title-accent" id="titleAccent">favorito</span>
+        <span id="title">Tu mi bonita</span>
+        <span class="title-accent" id="titleAccent">KATO</span>
       </h1>
 
       <p class="message" id="message">
-        En un mundo tan grande, encontrarte fue lo más bonito que me pudo pasar.
-        Gracias por ser esa persona que hace todo más especial, más bonito y más real.
-        Simplemente... gracias por existir.
+        Gracias por haber llegado a mi vida y ser una persona diferente.
+        No rechaces mis flores amarillas virtuales lo hice de corazon,
+        no me costo nada pero si vale mucho.
+        Te amo mucho.
       </p>
 
       <div class="divider">
@@ -512,9 +495,6 @@ body{
 
   let opened = false;
 
-  /* -------------------------------------------------------
-     Abrir la segunda interfaz
-     ------------------------------------------------------- */
   function openLetter(){
     if(opened) return;
     opened = true;
@@ -551,8 +531,6 @@ body{
       flower.style.setProperty("--delay", (-Math.random()*16) + "s");
       flower.style.setProperty("--drift", (-120 + Math.random()*240) + "px");
 
-      /* Flor de 5 pétalos en SVG.
-         Es ligera y no depende de emojis del dispositivo. */
       flower.innerHTML = `
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <g fill="#f5c84b">
